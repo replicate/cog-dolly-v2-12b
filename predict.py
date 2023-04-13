@@ -16,7 +16,7 @@ from subclass import YieldingCausalLM
 DEFAULT_MODEL = "databricks/dolly-v2-12b"
 CACHE_DIR = "pretrained_weights"
 TOKENIZER_PATH = './tokenizer'
-
+PATH_TO_TENSORIZER_WEIGHTS = None
 
 INSTRUCTION_KEY = "### Instruction:"
 RESPONSE_KEY = "### Response:"
@@ -45,10 +45,9 @@ class Predictor(BasePredictor):
         if weights is not None and weights.name == 'weights':
             # bugfix
             weights = None
-        if weights is None:
-            print('Loading local tensorized weights...')
-            #self.model = self.load_tensorizer(weights='tensorized_models/dolly-v2-12b-fp16.tensors')
-            self.model = self.load_tensorizer(weights=path)
+        if weights is None and PATH_TO_TENSORIZER_WEIGHTS:
+            print('Loading tensorized weights from public path')
+            self.model = self.load_tensorizer(weights=PATH_TO_TENSORIZER_WEIGHTS)
 
         elif (hasattr(weights, 'filename') and 'tensors' in weights.filename) or str(weights).endswith(".tensors"):
             self.model = self.load_tensorizer(weights)
