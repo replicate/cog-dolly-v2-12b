@@ -16,7 +16,10 @@ from subclass import YieldingCausalLM
 DEFAULT_MODEL = "databricks/dolly-v2-12b"
 CACHE_DIR = "pretrained_weights"
 TOKENIZER_PATH = './tokenizer'
-PATH_TO_TENSORIZER_WEIGHTS = None
+
+# To download tensorizer weights instead of load them from a local source, `REMOTE_PATH_TO_TENSORIZER_WEIGHTS` to their URL
+REMOTE_PATH_TO_TENSORIZER_WEIGHTS = None
+PATH_TO_TENSORIZER_WEIGHTS = REMOTE_PATH_TO_TENSORIZER_WEIGHTS if REMOTE_PATH_TO_TENSORIZER_WEIGHTS else './tensorized_models/dolly-v2-12b-fp16.tensors'
 
 INSTRUCTION_KEY = "### Instruction:"
 RESPONSE_KEY = "### Response:"
