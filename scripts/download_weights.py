@@ -6,6 +6,7 @@ from distutils.dir_util import copy_tree
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from huggingface_hub import snapshot_download
+from transformers import AutoTokenizer
 
 MODEL_REPO = "databricks/dolly-v2-12b"
 LOCAL_MODEL_DIR = './pretrained_weights'
@@ -26,5 +27,5 @@ with TemporaryDirectory() as tmpdir:
     copy_tree(snapshot_dir, str(LOCAL_MODEL_DIR))
 
 # Move tokenizer to separate location
-tokenizer = AutoTokenizer.from_pretrained("./pretrained_weights/", padding_side="left")
+tokenizer = AutoTokenizer.from_pretrained(LOCAL_MODEL_DIR, padding_side="left")
 tokenizer.save_pretrained(LOCAL_TOKENIZER_DIR)
