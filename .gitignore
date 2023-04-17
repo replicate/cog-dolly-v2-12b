@@ -1,2 +1,4 @@
 **/__pycache__/**
 notebooks
+pretrained_weights
+tensorized_models

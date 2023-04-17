@@ -1,10 +1,10 @@
-# cog-dolly-2
+# Cog Open-Assistant SFT-1 12B
 
-This repository is an implementation of [dolly-v2-12b](https://huggingface.co/databricks/dolly-v2-12b) as a Cog model. [Cog packages machine learning models as standard containers.](https://github.com/replicate/cog). 
+This repository is an implementation of [Open-Assistant SFT-1 12B](https://huggingface.co/OpenAssistant/oasst-sft-1-pythia-12b) as a Cog model. [Cog packages machine learning models as standard containers.](https://github.com/replicate/cog). 
 
 # Prerequisites 
 
-* LLaMA weights. The weights for LLaMA have not yet been released publicly. To apply for access, fill out this Meta Research form.
+* Model weights.
 
 * GPU machine. You'll need a Linux machine with an NVIDIA GPU attached and the NVIDIA Container Toolkit installed. If you don't already have access to a machine with a GPU, check out our guide to getting a GPU machine. This codebase currently assumes a single device with sufficient VRAM (>24GB) is available. If, instead, you have access to a multi-device environment, you can modify the code to distribute your model across devices. 
 
@@ -39,9 +39,9 @@ chmod +x ./scripts/tensorize_model.py
 cog run ./scripts/tensorize_model.py
 ```
 
-This will load the model in fp16 and then use `tensorizer` to export it to `./tensorized_models/dolly-v2-12b-fp16.tensors`. 
+This will load the model in fp16 and then use `tensorizer` to export it to `./tensorized_models/oasst-sft-1-pythia-12b.tensors`. 
 
-To use these weights, comment out `tensorized_models` in `.dockerignore` and set `PATH_TO_TENSORIZER_WEIGHTS` in `predict.py` to `"./tensorized_models/dolly-v2-12b-fp16.tensors"`.
+To use these weights, comment out `tensorized_models` in `.dockerignore` and set `PATH_TO_TENSORIZER_WEIGHTS` in `predict.py` to `"./tensorized_models/oasst-sft-1-pythia-12b.tensors"`.
 
 ## Step 2: Run the model
 
@@ -49,7 +49,7 @@ To use these weights, comment out `tensorized_models` in `.dockerignore` and set
 You can run the model locally to test it:
 
 ```
-cog predict -i prompt="Who was Dolly the sheep?" -i temperature=0.75 -i repetition_penalty=1.2
+cog predict -i prompt="What is a meme, and what's the history behind this word?" -i temperature=0.75 -i max_length=500
 ```
 
 ## Step 3: Create a model on Replicate
