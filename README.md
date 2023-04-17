@@ -1,4 +1,4 @@
-# cog-dolly-2
+# Cog Open-Assistant SFT-1 12B
 
 This repository is an implementation of [Open-Assistant SFT-1 12B](https://huggingface.co/OpenAssistant/oasst-sft-1-pythia-12b) as a Cog model. [Cog packages machine learning models as standard containers.](https://github.com/replicate/cog). 
 
