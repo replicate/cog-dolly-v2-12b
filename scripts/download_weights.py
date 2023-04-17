@@ -8,7 +8,7 @@ from tempfile import TemporaryDirectory
 from huggingface_hub import snapshot_download
 from transformers import AutoTokenizer
 
-MODEL_REPO = "databricks/dolly-v2-12b"
+MODEL_REPO = "OpenAssistant/oasst-sft-1-pythia-12b"
 LOCAL_MODEL_DIR = './pretrained_weights'
 LOCAL_TOKENIZER_DIR = './tokenizer'
 

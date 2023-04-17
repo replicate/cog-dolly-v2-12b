@@ -13,35 +13,18 @@ from transformers import (AutoConfig, AutoModelForCausalLM,
 # from config import HUGGINGFACE_MODEL_NAME, load_tokenizer
 from subclass import YieldingCausalLM
 
-DEFAULT_MODEL = "databricks/dolly-v2-12b"
+DEFAULT_MODEL = "OpenAssistant/oasst-sft-1-pythia-12b"
 CACHE_DIR = "pretrained_weights"
 TOKENIZER_PATH = './tokenizer'
 
 # To download tensorizer weights instead of load them from a local source, `REMOTE_PATH_TO_TENSORIZER_WEIGHTS` to their URL
 REMOTE_PATH_TO_TENSORIZER_WEIGHTS = None
-PATH_TO_TENSORIZER_WEIGHTS = REMOTE_PATH_TO_TENSORIZER_WEIGHTS if REMOTE_PATH_TO_TENSORIZER_WEIGHTS else './tensorized_models/dolly-v2-12b-fp16.tensors'
+PATH_TO_TENSORIZER_WEIGHTS = REMOTE_PATH_TO_TENSORIZER_WEIGHTS if REMOTE_PATH_TO_TENSORIZER_WEIGHTS else './tensorized_models/oasst-sft-1-pythia-12b.tensors'
 
-INSTRUCTION_KEY = "### Instruction:"
-RESPONSE_KEY = "### Response:"
-END_KEY = "### End"
-INTRO_BLURB = (
-    "Below is an instruction that describes a task. Write a response that appropriately completes the request."
-)
 
 # This is the prompt that is used for generating responses using an already trained model.  It ends with the response
 # key, where the job of the model is to provide the completion that follows it (i.e. the response itself).
-PROMPT_FOR_GENERATION_FORMAT = """{intro}
-
-{instruction_key}
-{instruction_text}
-
-{response_key}
-""".format(
-    intro=INTRO_BLURB,
-    instruction_key=INSTRUCTION_KEY,
-    instruction_text="{instruction_text}",
-    response_key=RESPONSE_KEY,
-)
+PROMPT_FOR_GENERATION_FORMAT = """<|prompter|>{input_text}<|endoftext|><|assistant|>"""
 
 class Predictor(BasePredictor):
     def setup(self, weights: Optional[Path] = None):
@@ -128,7 +111,7 @@ class Predictor(BasePredictor):
     ) -> ConcatenateIterator[str]:
 
             
-        prompt_text = PROMPT_FOR_GENERATION_FORMAT.format(instruction_text=prompt)
+        prompt_text = PROMPT_FOR_GENERATION_FORMAT.format(input_text=prompt)
 
         input_ids = self.tokenizer(prompt_text, return_tensors="pt").input_ids.to("cuda:0")
 
@@ -168,7 +151,7 @@ class Predictor(BasePredictor):
                     continue
 
                 # End token
-                if cur_token == "### End":
+                if cur_token == "<|endoftext|>":
                     break
 
                 prev_ids.append(cur_id)
